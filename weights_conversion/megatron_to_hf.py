@@ -162,7 +162,7 @@ def write_llama_model(model_path,
         state_dict = {
             "model.norm.weight": loaded["transformer"]['final_norm.weight'],
             # "lm_head.weight": loaded['lm_head'],
-            "lm_head.weight": loaded['output_layer'],
+            "lm_head.weight": loaded['output_layer']['weight'],
             "model.embed_tokens.weight": loaded['embedding']["word_embeddings.weight"]
         }
 
