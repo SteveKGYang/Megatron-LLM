@@ -97,12 +97,8 @@ def write_llama_model(model_path,
     assert len(list(base_path.glob("mp_rank_*"))) == 1, "Unshard your model with checkpoint_util.py first!"
     loaded = torch.load(base_path/"mp_rank_00"/"model_optim_rng.pt", map_location="cpu")
     args = loaded['args']
-    print(args)
-
-    print(loaded.keys())
-    print(loaded['model'].keys())
+    
     loaded = loaded['model']['language_model']
-    # loaded = loaded['model']
 
     if 'transformer' not in loaded:  # normalize key names
         loaded["transformer"] = loaded.pop("encoder")
@@ -125,6 +121,8 @@ def write_llama_model(model_path,
     print('Llama-Megatron Loaded!')
     param_count = 0
     index_dict = {"weight_map": {}}
+
+    print(loaded.keys())
         
     # Start conversion
     with TemporaryDirectory() as tmp_model_path:
