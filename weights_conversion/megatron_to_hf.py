@@ -36,7 +36,7 @@ from transformers import LlamaConfig, LlamaForCausalLM, LlamaTokenizerFast, Falc
 
 from utils.permute_qkv import permute_qkv
 
-from megatron.tokenizer import build_tokenizer
+# from megatron.tokenizer import build_tokenizer
 
 
 def write_json(text, path):
@@ -615,7 +615,7 @@ def main():
             num_output_shards=args.num_output_shards,
             safe_serialization=True,
         )
-    write_tokenizer(args)
+    # write_tokenizer(args)
 
 if __name__ == "__main__":
     main()

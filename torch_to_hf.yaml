@@ -1,5 +1,5 @@
 protocolVersion: 2
-name: dcp_2_torch
+name: torch_to_hf
 type: job
 jobRetryCount: 0
 prerequisites:
@@ -36,9 +36,8 @@ taskRoles:
       - export NCCL_DEBUG=WARN
       - nvidia-smi
       - echo "Download code"
-      - git clone https://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@github.com/SigmaSys/Sigma1_pretraining_v2.git
-      - cd Sigma1_pretraining_v2
-      - git checkout klyang/megatron
+      - git clone https://github.com/SteveKGYang/Megatron-LLM.git
+      - cd Megatron-LLM
       - ls -alh .
       - echo "Prepare other envs"
       - pip install transformers
@@ -71,7 +70,8 @@ taskRoles:
       # - chmod 777 /scratch/pes2o
       # - bash copy_dataset_olmo2.sh
       - echo "Start converting..."
-      - python tools/checkpoint_util.py --model_type GPT --position-embedding-type rope --load_dir /mnt/pvc-blob-nfs/klyang/tuning_result/olmo2_replicate_0207_format_torch/torch/ --save_dir /mnt/pvc-blob-nfs/klyang/converted_model/ --target_tensor_parallel_size 1 --target_pipeline_parallel_size 1 --megatron_path ./
+      - python weights_conversion/megatron_to_hf.py --input_dir /mnt/pvc-blob-nfs/klyang/converted_model_edu/ --num_output_shards 2 --output_dir /mnt/pvc-blob-nfs/klyang/hf_converted_model_edu/ 
+      # - python weights_conversion/megatron_to_hf.py --input_dir /home/pretraining/klyang/mount_dir/eu_mount/converted_model_edu --num_output_shards 2 --output_dir ./hf_converted_model_edu/
       - echo "End converting..."
 defaults:
   virtualCluster: default
