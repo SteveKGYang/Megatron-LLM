@@ -123,6 +123,7 @@ def write_llama_model(model_path,
     index_dict = {"weight_map": {}}
 
     print(loaded.keys())
+    print(loaded['transformer'].keys())
         
     # Start conversion
     with TemporaryDirectory() as tmp_model_path:
