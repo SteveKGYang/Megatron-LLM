@@ -98,12 +98,13 @@ def write_llama_model(model_path,
     loaded = torch.load(base_path/"mp_rank_00"/"model_optim_rng.pt", map_location="cpu")
     args = loaded['args']
 
-    loaded = loaded['model']['language_model']
+    # loaded = loaded['model']['language_model']
+    loaded = loaded['model']
 
-    print('asas')
-    print(loaded['model'])
-    print('asaas')
-    print(loaded['model'].keys())
+    # print('asas')
+    # print(loaded['model'])
+    # print('asaas')
+    # print(loaded['model'].keys())
     if 'transformer' not in loaded:  # normalize key names
         loaded["transformer"] = loaded.pop("encoder")
         for key in list(loaded["transformer"].keys()):
