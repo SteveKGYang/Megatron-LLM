@@ -97,22 +97,18 @@ def write_llama_model(model_path,
     assert len(list(base_path.glob("mp_rank_*"))) == 1, "Unshard your model with checkpoint_util.py first!"
     loaded = torch.load(base_path/"mp_rank_00"/"model_optim_rng.pt", map_location="cpu")
     args = loaded['args']
+    print(args)
 
     # loaded = loaded['model']['language_model']
-    # loaded = loaded['model']
+    loaded = loaded['model']
 
-    print('as')
-    print(loaded.keys())
-    print('asas')
-    print(loaded['model'])
-    
-    print(loaded['model'].keys())
     if 'transformer' not in loaded:  # normalize key names
-        loaded["transformer"] = loaded.pop("encoder")
+        # loaded["transformer"] = loaded.pop("encoder")
+        loaded["transformer"] = loaded.pop("decoder")
         for key in list(loaded["transformer"].keys()):
             loaded["transformer"][key.replace("self_attention", "attention")] = loaded["transformer"].pop(key)
         loaded["embedding"]["word_embeddings.weight"] = loaded["embedding"].pop("word_embeddings")["weight"]
-        args.num_layers = args.encoder_num_layers
+        # args.num_layers = args.encoder_num_layers
 
     # Load arguments
     n_layers = args.num_layers
@@ -601,7 +597,8 @@ def main():
     args = parser.parse_args()
     if args.model in {"llama", "llama2", "codellama"}:
         eps = 1e-6 if args.model == "llama" else 1e-5
-        rope_theta = 1e6 if args.model == "codellama" else 1e4
+        # rope_theta = 1e6 if args.model == "codellama" else 1e4
+        rope_theta = 5e5
         write_llama_model(
             model_path=args.output_dir,
             input_base_path=args.input_dir,
