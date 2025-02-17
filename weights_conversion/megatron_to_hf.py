@@ -123,7 +123,8 @@ def write_llama_model(model_path,
     index_dict = {"weight_map": {}}
 
     print(loaded.keys())
-    print(loaded['transformer'].keys())
+    # print(loaded['transformer'].keys())
+    print(loaded['output_layer'])
         
     # Start conversion
     with TemporaryDirectory() as tmp_model_path:
@@ -159,8 +160,9 @@ def write_llama_model(model_path,
 
         filename = f"pytorch_model-{n_layers + 1}-of-{n_layers + 1}.bin"
         state_dict = {
-            "model.norm.weight": loaded["transformer"]['final_layernorm.weight'],
-            "lm_head.weight": loaded['lm_head'],
+            "model.norm.weight": loaded["transformer"]['final_norm.weight'],
+            # "lm_head.weight": loaded['lm_head'],
+            "lm_head.weight": loaded['output_layer'],
             "model.embed_tokens.weight": loaded['embedding']["word_embeddings.weight"]
         }
 
