@@ -99,6 +99,11 @@ def write_llama_model(model_path,
     args = loaded['args']
 
     loaded = loaded['model']['language_model']
+
+    print('asas')
+    print(loaded['model'])
+    print('asaas')
+    print(loaded['model'].keys())
     if 'transformer' not in loaded:  # normalize key names
         loaded["transformer"] = loaded.pop("encoder")
         for key in list(loaded["transformer"].keys()):
