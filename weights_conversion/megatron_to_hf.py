@@ -99,12 +99,14 @@ def write_llama_model(model_path,
     args = loaded['args']
     print(args)
 
-    # loaded = loaded['model']['language_model']
-    loaded = loaded['model']
+    print(loaded.keys())
+    print(loaded['model'].keys())
+    loaded = loaded['model']['language_model']
+    # loaded = loaded['model']
 
     if 'transformer' not in loaded:  # normalize key names
-        # loaded["transformer"] = loaded.pop("encoder")
-        loaded["transformer"] = loaded.pop("decoder")
+        loaded["transformer"] = loaded.pop("encoder")
+        # loaded["transformer"] = loaded.pop("decoder")
         for key in list(loaded["transformer"].keys()):
             loaded["transformer"][key.replace("self_attention", "attention")] = loaded["transformer"].pop(key)
         loaded["embedding"]["word_embeddings.weight"] = loaded["embedding"].pop("word_embeddings")["weight"]
